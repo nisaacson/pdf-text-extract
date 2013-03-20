@@ -1,0 +1,29 @@
+{
+  "name": "pdf-text-extract",
+  "version": "1.0.0",
+  "description": "# Extract text from pdfs that contain searchable pdf text",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nisaacson/pdf-text-extract.git"
+  },
+  "keywords": [
+    "pdf",
+    "extract",
+    "pdftotext",
+    "text",
+    "extract"
+  ],
+  "author": "Noah Isaacson",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "mocha": "~1.8.2"
+  }
+}
