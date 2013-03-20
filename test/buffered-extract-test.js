@@ -8,9 +8,13 @@ describe('Buffered Extract', function () {
     var desiredNumPages = 8
     var filePath = path.join(__dirname, 'data', 'multipage.pdf')
     assert.ok(fs.existsSync(filePath), 'pdf file not found at path: ' + filePath)
-    extract(filePath, function (err, reply) {
+    extract(filePath, function (err, pages) {
       should.not.exist(err)
-      should.exist(reply)
+      should.exist(pages)
+      pages.length.should.eql(desiredNumPages)
+      pages.map(function (page) {
+        should.exist(page)
+      })
       done()
     })
   })

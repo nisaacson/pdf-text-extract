@@ -1,6 +1,6 @@
 {
   "name": "pdf-text-extract",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "# Extract text from pdfs that contain searchable pdf text",
   "main": "index.js",
   "directories": {
@@ -24,6 +24,7 @@
   "license": "BSD",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "mocha": "~1.8.2"
+    "mocha": "~1.8.2",
+    "should": "~1.2.2"
   }
 }
