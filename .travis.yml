@@ -1,5 +1,5 @@
 before_install:
- - sudo apt-get install poppler-utils
+ - sudo apt-get install -qq poppler-utils
 
 language: node_js
 node_js:
