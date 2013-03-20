@@ -1,4 +1,3 @@
-var inspect = require('eyespect').inspector();
 var assert = require('assert')
 var fs = require('fs')
 var path = require('path')

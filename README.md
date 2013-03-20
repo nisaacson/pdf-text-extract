@@ -10,15 +10,14 @@ You will need the **pdftotext** binary available on your path. There are package
 
 # Usage
 ```javascript
-var inspect = require('eyespect').inspector();
 var filePath = path.join(__dirname, 'test/pdf')
 var extract = require('pdf-text-extract')
 extract(filePath, function (err, pages) {
   if (err) {
-    inspect(err, 'error extracting text from file')
+    console.dir(err)
     return
   }
-  inspect(pages, 'extracted pages')
+  console.dir('extracted pages', pages)
 })
 ```
 The output will be an array of where each entry is a page of text. If you want just a string of all pages you can do `pages.join(' ')`

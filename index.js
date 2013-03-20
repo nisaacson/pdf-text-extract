@@ -1,4 +1,3 @@
-var inspect = require('eyespect').inspector({maxLength: 9009090});
 var spawn = require('child_process').spawn;
 module.exports = function (filePath, cb) {
   var cmd = 'pdftotext'
