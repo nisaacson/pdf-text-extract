@@ -6,6 +6,7 @@ var bufferedExtract = require('../bufferedExtract.js')
 var should = require('should');
 describe('Buffered Extract', function () {
   it('should extract text', function (done) {
+    var desiredNumPages = 8
     var filePath = path.join(__dirname, 'data', 'multipage.pdf')
     assert.ok(fs.existsSync(filePath), 'pdf file not found at path: ' + filePath)
     bufferedExtract(filePath, function (err, reply) {
