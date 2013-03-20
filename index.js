@@ -36,9 +36,6 @@ module.exports = function (filePath, cb) {
     if (!lastPage) {
       pages.pop()
     }
-    pages = pages.map(function (page) {
-    })
-
     return cb(null, pages);
   });
 }
