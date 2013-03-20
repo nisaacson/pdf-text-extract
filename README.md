@@ -1,5 +1,6 @@
 # PDF Text Extract
 Extract text from pdfs that contain searchable pdf text. The module calls the pdftotext command to perform the actual extraction
+[![build status](https://secure.travis-ci.org/nisaacson/pdf-text-extract)](http://travis-ci.org/nisaacson/pdf-text-extract) [![Dependency Status](https://david-dm.org/nisaacson/pdf-text-extract.png)](https://david-dm.org/nisaacson/pdf-text-extract)
 
 # Installation
 ```bash
