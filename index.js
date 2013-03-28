@@ -13,8 +13,11 @@ module.exports = function (filePath, cb) {
   var text = '';
   stdout.setEncoding('utf8');
   stderr.setEncoding('utf8');
+
   stderr.on('data', function(data) {
-    return cb(data, null);
+    console.log(data)
+    cb(data, null);
+    cb = function() {}
   });
   // buffer the stdout output
   var events = 0
@@ -36,6 +39,7 @@ module.exports = function (filePath, cb) {
     if (!lastPage) {
       pages.pop()
     }
-    return cb(null, pages);
+    cb(null, pages);
+    cb = function() {}
   });
 }
