@@ -25,3 +25,9 @@ The output will be an array of where each entry is a page of text. If you want j
 
 
 # Test
+
+```bash
+# install dev dependencies
+npm install
+# run tests
+npm test

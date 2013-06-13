@@ -14,10 +14,10 @@ module.exports = function (filePath, cb) {
   stdout.setEncoding('utf8');
   stderr.setEncoding('utf8');
 
+  var stdErrString = ''
   stderr.on('data', function(data) {
     console.log(data)
-    cb(data, null);
-    cb = function() {}
+    stdErrString += data
   });
   // buffer the stdout output
   var events = 0
@@ -39,7 +39,10 @@ module.exports = function (filePath, cb) {
     if (!lastPage) {
       pages.pop()
     }
-    cb(null, pages);
-    cb = function() {}
+    var err = null
+    if (stdErrString) {
+      err = stdErrString
+    }
+    cb(err, pages);
   });
 }
