@@ -7,7 +7,7 @@ module.exports = function (filePath, cb) {
     'UTF-8',
     filePath,
     '-']
-  var child = spawn('pdftotext', args, {stdid: 'pipe'})
+  var child = spawn('pdftotext', args, {stdio: 'pipe'})
   var stdout = child.stdout;
   var stderr = child.stderr;
   var text = '';
