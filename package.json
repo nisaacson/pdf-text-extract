@@ -1,6 +1,6 @@
 {
   "name": "pdf-text-extract",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "# Extract text from pdfs that contain searchable pdf text",
   "main": "index.js",
   "directories": {
