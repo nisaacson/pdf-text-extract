@@ -1,48 +1,40 @@
-var spawn = require('child_process').spawn;
-module.exports = function (filePath, cb) {
+var inspect = require('eyespect').inspector()
+var exec = require('child_process').exec
+module.exports = function(filePath, cb) {
   var cmd = 'pdftotext'
   var args = [
-    '-layout',
-    '-enc',
-    'UTF-8',
+      '-layout',
+      '-enc',
+      'UTF-8',
     filePath,
-    '-']
-  var child = spawn('pdftotext', args, {stdio: 'pipe'})
-  var stdout = child.stdout;
-  var stderr = child.stderr;
-  var text = '';
-  stdout.setEncoding('utf8');
-  stderr.setEncoding('utf8');
-
-  var stdErrString = ''
-  stderr.on('data', function(data) {
-    console.log(data)
-    stdErrString += data
-  });
-  // buffer the stdout output
-  var events = 0
-  stdout.on('data', function(data) {
-    events += 1
-    text += data;
-  });
-  stdout.on('close', function() {
-    var pages = text.split(/\f/);
+      '-'
+  ];
+  var command = cmd + ' ' + args.join(' ')
+  var child = exec(command, function(err, stdout, stderr) {
+    if (err) {
+        return cb({
+          message: 'pdf-text-extract failed',
+          error: err,
+          filePath: filePath,
+          command: command,
+          stack: new Error().stack
+        })
+    }
+    var pages = stdout.split(/\f/);
     if (!pages) {
       return cb({
-        message: 'failed to extract text from your document',
+        message: 'pdf-text-extract failed',
         error: 'no text returned from the pdftotext command',
+        filePath: filePath,
+        command: command,
         stack: new Error().stack
       })
     }
     // sometimes there can be an extract blank page on the end
-    var lastPage = pages[pages.length-1]
+    var lastPage = pages[pages.length - 1]
     if (!lastPage) {
       pages.pop()
     }
-    var err = null
-    if (stdErrString) {
-      err = stdErrString
-    }
-    cb(err, pages);
+    cb(stderr, pages);
   });
 }
