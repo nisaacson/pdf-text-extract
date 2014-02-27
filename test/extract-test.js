@@ -35,9 +35,10 @@ describe('Pdf extract', function () {
     this.slow('4s')
     var filePath = path.join(__dirname, 'data', 'huge.pdf')
 
-    extract(filePath, {
-      maxBuffer: 5000 * 1024
-    }, function (err, pages) {
+    var options = {
+      cwd: null
+    }
+    extract(filePath, options, function (err, pages) {
       should.not.exists(err)
       should.exists(pages)
 

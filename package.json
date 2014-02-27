@@ -3,6 +3,7 @@
   "version": "1.0.13",
   "description": "Extract text from pdfs that contain searchable pdf text",
   "main": "index.js",
+  "bin": "./bin/pdf-text-extract.js",
   "directories": {
     "test": "test"
   },
@@ -26,5 +27,8 @@
   "devDependencies": {
     "mocha": "~1.8.2",
     "should": "~1.2.2"
+  },
+  "dependencies": {
+    "yargs": "~1.1.3"
   }
 }

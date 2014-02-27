@@ -1,37 +1,31 @@
 var path = require('path')
-var exec = require('child_process').exec
+var spawn = require('child_process').spawn
 module.exports = function pdfTextExtract(filePath, options, cb) {
   if (typeof(options) === 'function') {
     cb = options
     options = {}
   }
-  var cmd = 'pdftotext'
   filePath = path.resolve(filePath)
   var args = [
     '-layout',
     '-enc',
     'UTF-8',
-    '"' + filePath + '"',
+    filePath,
+    //'"' + filePath + '"',
     '-'
-  ];
-  var command = cmd + ' ' + args.join(' ')
-  var child = exec(command, options, function (err, stdout, stderr) {
+  ]
+  streamResults(args, options, splitPages)
+
+  function splitPages(err, content) {
     if (err) {
-      return cb({
-        message: 'pdf-text-extract failed',
-        error: err,
-        filePath: filePath,
-        command: command,
-        stack: new Error().stack
-      })
+      return cb(err)
     }
-    var pages = stdout.split(/\f/);
+    var pages = content.split(/\f/)
     if (!pages) {
       return cb({
         message: 'pdf-text-extract failed',
         error: 'no text returned from the pdftotext command',
         filePath: filePath,
-        command: command,
         stack: new Error().stack
       })
     }
@@ -40,9 +34,32 @@ module.exports = function pdfTextExtract(filePath, options, cb) {
     if (!lastPage) {
       pages.pop()
     }
-    if (!stderr || stderr === '') {
-      stderr = null
+    cb(null, pages)
+  }
+}
+function streamResults(args, options, cb) {
+  var output = ''
+  var stderr = ''
+  var command = 'pdftotext'
+  var child = spawn(command, args, options)
+  child.stdout.setEncoding('utf8')
+  child.stderr.setEncoding('utf8')
+  child.stdout.on('data', stdoutHandler)
+  child.stderr.on('data', stderrHandler)
+  child.on('exit', exitHandler)
+
+  function stdoutHandler(data) {
+    output += data
+  }
+
+  function stderrHandler(data) {
+    stderr += data
+  }
+
+  function exitHandler(code) {
+    if (code !== 0) {
+      cb(new Error('pdftextextract command failed: ' + stderr))
     }
-    cb(stderr, pages);
-  });
+    cb(null, output)
+  }
 }
