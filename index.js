@@ -1,4 +1,3 @@
-var inspect = require('eyespect').inspector()
 var exec = require('child_process').exec
 module.exports = function(filePath, cb) {
   var cmd = 'pdftotext'
