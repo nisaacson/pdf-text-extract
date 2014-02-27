@@ -1,15 +1,21 @@
+var path = require('path')
 var exec = require('child_process').exec
-module.exports = function pdfTextExtract(filePath, cb) {
+module.exports = function pdfTextExtract(filePath, options, cb) {
+  if (typeof(options) === 'function') {
+    cb = options
+    options = {}
+  }
   var cmd = 'pdftotext'
+  filePath = path.resolve(filePath)
   var args = [
     '-layout',
     '-enc',
     'UTF-8',
-    filePath,
+    '"' + filePath + '"',
     '-'
   ];
   var command = cmd + ' ' + args.join(' ')
-  var child = exec(command, function (err, stdout, stderr) {
+  var child = exec(command, options, function (err, stdout, stderr) {
     if (err) {
       return cb({
         message: 'pdf-text-extract failed',
