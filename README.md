@@ -6,7 +6,12 @@ Extract text from pdfs that contain searchable pdf text. The module calls the pd
 ```bash
 npm install pdf-text-extract
 ```
+
+
 You will need the **pdftotext** binary available on your path. There are packages available for many different operating systems
+
+> See [https://github.com/nisaacson/pdf-extract#osx](https://github.com/nisaacson/pdf-extract#osx) for how to install the `pdftotext` command
+
 
 # Usage
 ```javascript
