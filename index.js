@@ -58,7 +58,7 @@ function streamResults(args, options, cb) {
 
   function exitHandler(code) {
     if (code !== 0) {
-      cb(new Error('pdftextextract command failed: ' + stderr))
+      return cb(new Error('pdf-text-extract command failed: ' + stderr))
     }
     cb(null, output)
   }
