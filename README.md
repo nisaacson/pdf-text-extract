@@ -38,9 +38,7 @@ If needed you can pass an optional arguments to the extract function. These will
 ```javascript
 var filePath = path.join(__dirname, 'test/data/multipage.pdf')
 var extract = require('pdf-text-extract')
-var options = {
-  cwd: "./"
-}
+var options = ['-raw']
 extract(filePath, options, function (err, pages) {
   if (err) {
     console.dir(err)

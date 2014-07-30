@@ -1,20 +1,20 @@
 var path = require('path')
 var spawn = require('child_process').spawn
 module.exports = function pdfTextExtract(filePath, options, cb) {
+
+  var defaults = [
+    '-layout'
+  ];
+  
   if (typeof(options) === 'function') {
     cb = options
-    options = {}
+    options = defaults;
   }
   filePath = path.resolve(filePath)
-  var args = [
-    '-layout',
-    '-enc',
-    'UTF-8',
-    filePath,
-    //'"' + filePath + '"',
-    '-'
-  ]
-  streamResults(args, options, splitPages)
+
+  options.push('-enc', 'UTF-8', filePath, '-');
+
+  streamResults(options, {}, splitPages)
 
   function splitPages(err, content) {
     if (err) {
