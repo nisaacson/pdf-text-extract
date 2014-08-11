@@ -6,14 +6,20 @@ module.exports = function pdfTextExtract(filePath, options, cb) {
     options = {}
   }
   filePath = path.resolve(filePath)
-  var args = [
+
+  var defaultArgs = [
     '-layout',
     '-enc',
     'UTF-8',
     filePath,
-    //'"' + filePath + '"',
     '-'
-  ]
+  ];
+
+  var args = defaultArgs;
+  if (options.args) {
+    args = options.args;
+  };
+
   streamResults(args, options, splitPages)
 
   function splitPages(err, content) {
