@@ -52,7 +52,7 @@ function streamResults(args, options, cb) {
   child.stderr.setEncoding('utf8')
   child.stdout.on('data', stdoutHandler)
   child.stderr.on('data', stderrHandler)
-  child.on('exit', exitHandler)
+  child.on('close', closeHandler)
 
   function stdoutHandler(data) {
     output += data
@@ -62,7 +62,7 @@ function streamResults(args, options, cb) {
     stderr += data
   }
 
-  function exitHandler(code) {
+  function closeHandler(code) {
     if (code !== 0) {
       return cb(new Error('pdf-text-extract command failed: ' + stderr))
     }

@@ -30,6 +30,22 @@ describe('Pdf extract', function () {
     })
   })
 
+  it('should work with parallel data streams', function (done) {
+    var filePath = path.join(__dirname, 'data', 'pdf with space in name.pdf')
+
+    var streams = 10, complete = 0;
+    for(var i = 0; i < streams; i++) {
+      extract(filePath, function (err, pages) {
+        should.not.exist(err)
+        should.exists(pages[0])
+        complete++;
+        if(complete === streams) {
+          done()
+        }
+      })
+    }
+  })
+
   it('should allow large files', function (done) {
     this.timeout(5000)
     this.slow('4s')
