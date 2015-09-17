@@ -1,10 +1,14 @@
 var path = require('path')
 var spawn = require('child_process').spawn
+
 module.exports = function pdfTextExtract(filePath, options, cb) {
+
+  // 'options' is an optional argument
   if (typeof(options) === 'function') {
     cb = options
     options = {}
   }
+
   filePath = path.resolve(filePath)
 
   var defaultArgs = [
@@ -43,6 +47,10 @@ module.exports = function pdfTextExtract(filePath, options, cb) {
     cb(null, pages)
   }
 }
+
+/**
+ * spawns pdftotext and returns its output
+ */
 function streamResults(args, options, cb) {
   var output = ''
   var stderr = ''
