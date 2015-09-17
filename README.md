@@ -30,10 +30,34 @@ extract(filePath, function (err, pages) {
   console.dir(pages)
 })
 ```
-The output will be an array of where each entry is a page of text. If you want just a string of all pages you can do `pages.join(' ')`
+The output will be an array of where each entry is a page of text. If you want just a string of all pages you can set the option to `splitPages: false`.
+
+```javascript
+var filePath = path.join(__dirname, 'test/data/multipage.pdf')
+var extract = require('pdf-text-extract')
+extract(filePath, { splitPages: false }, function (err, text) {
+  if (err) {
+    console.dir(err)
+    return
+  }
+  console.dir(text)
+})
+```
+
+You can set the following options:
+- `firstPage`: First page to extract
+- `lastPage`: Last page to extract
+- `resolution`: in dpi, as is specified by pdftotext -r
+- `crop`: Should be an object { x:x, y:y, w:w, h:h }
+- `layout`: Should be either `layout`, `raw` or `htmlmeta`. Default: `layout`
+- `encoding`: Should be either `UCS-2`, `ASCII7`, `Latin1`, `UTF-8`, `ZapfDingbats` or `Symbol`. Default: `UTF-8`
+- `eol`: End of line convention. One of either: `unix`, `dos` or `mac`
+- `ownerPassword`: Owner password (for encrypted files)
+- `userPassword`: User password (for encrypted files)
+- `splitPages`: If true, the result will be and array of pages. Default: true.
 
 
-If needed you can pass an optional arguments to the extract function. These will be passed to the command
+If needed you can pass an optional arguments to the extract function. These will be passed to the `child_process.spawn` call.
 
 ```javascript
 var filePath = path.join(__dirname, 'test/data/multipage.pdf')
@@ -49,6 +73,8 @@ extract(filePath, options, function (err, pages) {
   console.dir('extracted pages', pages)
 })
 ```
+
+
 
 ## As a command line tool
 
