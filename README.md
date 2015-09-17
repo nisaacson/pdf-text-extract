@@ -45,16 +45,16 @@ extract(filePath, { splitPages: false }, function (err, text) {
 ```
 
 You can set the following options:
-- firstPage: First page to extract
-- lastPage: Last page to extract
-- resolution: in dpi, as is specified by pdftotext -r
-- crop: Should be an object { x:x, y:y, w:w, h:h }
-- layout: Should be either 'layout', 'raw' or 'htmlmeta'. Default: 'layout'
-- encoding: Should be either 'UCS-2', 'ASCII7', 'Latin1', 'UTF-8', 'ZapfDingbats' or 'Symbol'. Default: 'UTF-8'
-- eol: End of line convention. One of either: 'unix', 'dos' or 'mac'
-- ownerPassword: Owner password (for encrypted files)
-- userPassword: User password (for encrypted files)
-- splitPages: If true, the result will be and array of pages. Default: true.
+- `firstPage`: First page to extract
+- `lastPage`: Last page to extract
+- `resolution`: in dpi, as is specified by pdftotext -r
+- `crop`: Should be an object { x:x, y:y, w:w, h:h }
+- `layout`: Should be either `layout`, `raw` or `htmlmeta`. Default: `layout`
+- `encoding`: Should be either `UCS-2`, `ASCII7`, `Latin1`, `UTF-8`, `ZapfDingbats` or `Symbol`. Default: `UTF-8`
+- `eol`: End of line convention. One of either: `unix`, `dos` or `mac`
+- `ownerPassword`: Owner password (for encrypted files)
+- `userPassword`: User password (for encrypted files)
+- `splitPages`: If true, the result will be and array of pages. Default: true.
 
 
 If needed you can pass an optional arguments to the extract function. These will be passed to the `child_process.spawn` call.
