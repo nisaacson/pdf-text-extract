@@ -20,6 +20,7 @@ See [https://github.com/nisaacson/pdf-extract#osx](https://github.com/nisaacson/
 ## As a module
 
 ```javascript
+var path = require('path')
 var filePath = path.join(__dirname, 'test/data/multipage.pdf')
 var extract = require('pdf-text-extract')
 extract(filePath, function (err, pages) {
