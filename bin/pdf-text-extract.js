@@ -10,10 +10,9 @@ if (!fileName) {
 var filePath = path.resolve(fileName)
 extract(filePath, cb)
 
-function cb(err, pages) {
+function cb (err, pages) {
   if (err) {
     throw err
   }
   console.dir(pages)
 }
-

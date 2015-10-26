@@ -5,8 +5,7 @@ var extract = require('../index.js')
 var should = require('should')
 
 describe('Pdf extract', function () {
-
-  it('should return undefined err when everything is ok', function (done) {
+  it('should return output and no error when everything is ok', function (done) {
     var filePath = path.join(__dirname, 'data', 'multipage.pdf')
 
     extract(filePath, function (err, pages) {
@@ -17,12 +16,10 @@ describe('Pdf extract', function () {
   })
 
   it('should accept files with space in name', function (done) {
-
     var filePath = path.join(__dirname, 'data', 'pdf with space in name.pdf')
     assert.ok(fs.existsSync(filePath), 'pdf file not found at path: ' + filePath)
 
     extract(filePath, function (err, pages) {
-
       should.not.exist(err)
       should.exist(pages)
 
@@ -33,13 +30,14 @@ describe('Pdf extract', function () {
   it('should work with parallel data streams', function (done) {
     var filePath = path.join(__dirname, 'data', 'pdf with space in name.pdf')
 
-    var streams = 10, complete = 0;
-    for(var i = 0; i < streams; i++) {
+    var streams = 10
+    var complete = 0
+    for (var i = 0; i < streams; i++) {
       extract(filePath, function (err, pages) {
         should.not.exist(err)
         should.exists(pages[0])
-        complete++;
-        if(complete === streams) {
+        complete++
+        if (complete === streams) {
           done()
         }
       })
@@ -58,6 +56,18 @@ describe('Pdf extract', function () {
       should.not.exists(err)
       should.exists(pages)
 
+      done()
+    })
+  })
+
+  it('should support custom pdftotext command undefined err when everything is ok', function (done) {
+    var filePath = path.join(__dirname, 'data', 'multipage.pdf')
+    var options = {}
+    var pdfToTextCommand = 'pdftotext'
+
+    extract(filePath, options, pdfToTextCommand, function (err, pages) {
+      should.not.exist(err)
+      should.exists(pages)
       done()
     })
   })
