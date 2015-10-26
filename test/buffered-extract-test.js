@@ -2,7 +2,7 @@ var assert = require('assert')
 var fs = require('fs')
 var path = require('path')
 var extract = require('../index.js')
-var should = require('should');
+var should = require('should')
 describe('Buffered Extract', function () {
   it('should extract text', function (done) {
     var desiredNumPages = 8

@@ -6,7 +6,7 @@ Extract text from pdfs that contain searchable pdf text. The module is wrapper t
 
 # Installation
 ```bash
-npm install pdf-text-extract
+npm install --save pdf-text-extract
 ```
 
 
@@ -18,6 +18,11 @@ See [https://github.com/nisaacson/pdf-extract#osx](https://github.com/nisaacson/
 # Usage
 
 ## As a module
+
+`extract(filePath, [options], [pdftotextcommand], callback)`
+
+Options and pdftotextcommand are not required.
+
 
 ```javascript
 var path = require('path')
@@ -75,7 +80,24 @@ extract(filePath, options, function (err, pages) {
 })
 ```
 
+You can also override the command for `pdftotext` if it is installed in a location that is not available in the `PATH` environment variable
 
+
+```javascript
+var filePath = path.join(__dirname, 'test/data/multipage.pdf')
+var pdfToTextCommand = '/opt/bin/pdftotext'
+var extract = require('pdf-text-extract')
+var options = {
+  cwd: "./"
+}
+extract(filePath, options, pdfToTextCommand, function (err, pages) {
+  if (err) {
+    console.dir(err)
+    return
+  }
+  console.dir('extracted pages', pages)
+})
+```
 
 ## As a command line tool
 
