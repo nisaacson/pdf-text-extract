@@ -55,7 +55,6 @@ describe('Pdf extract', function () {
     extract(filePath, options, function (err, pages) {
       should.not.exists(err)
       should.exists(pages)
-
       done()
     })
   })

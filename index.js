@@ -13,6 +13,11 @@ module.exports = function pdfTextExtract (filePath, options, pdfToTextCommand, c
     cb = options
     options = {}
   }
+  if (typeof (pdfToTextCommand) === 'function') {
+    cb = pdfToTextCommand
+    pdfToTextCommand = 'pdftotext'
+    options = {}
+  }
   if (!pdfToTextCommand) {
     pdfToTextCommand = 'pdftotext'
   }
@@ -61,7 +66,7 @@ module.exports = function pdfTextExtract (filePath, options, pdfToTextCommand, c
   args.push(filePath)
   args.push('-')
 
-  streamResults(args, options, options.splitPages ? splitPages : cb)
+  streamResults(pdfToTextCommand, args, options, options.splitPages ? splitPages : cb)
 
   function splitPages (err, content) {
     if (err) {
@@ -88,10 +93,9 @@ module.exports = function pdfTextExtract (filePath, options, pdfToTextCommand, c
 /**
  * spawns pdftotext and returns its output
  */
-function streamResults (args, options, cb) {
+function streamResults (command, args, options, cb) {
   var output = ''
   var stderr = ''
-  var command = 'pdftotext'
   var child = spawn(command, args, options)
   child.stdout.setEncoding('utf8')
   child.stderr.setEncoding('utf8')
