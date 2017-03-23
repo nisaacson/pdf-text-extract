@@ -24,6 +24,11 @@ function pdfTextExtract (filePath, options, pdfToTextCommand, cb) {
 
   filePath = path.resolve(filePath)
 
+  // [feat-promise] if cb is not a function, then it's probably a promise-typed call
+  if (typeof (cb) !== 'function') {
+    cb = null
+  }
+
   // [feat-promise] options have to be not null
   if (!options) {
     options = {}
@@ -72,9 +77,6 @@ function pdfTextExtract (filePath, options, pdfToTextCommand, cb) {
   args.push('-')
 
   function splitPages (err, content) {
-    if (typeof (this.cb) === 'function' && this.cb) {
-      cb = this.cb
-    }
     if (err) {
       return cb(err)
     }
