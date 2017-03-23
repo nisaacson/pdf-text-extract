@@ -1,7 +1,7 @@
 var path = require('path')
 var spawn = require('child_process').spawn
 
-module.exports = function pdfTextExtract (filePath, options, pdfToTextCommand, cb) {
+function pdfTextExtract (filePath, options, pdfToTextCommand, cb) {
   if (!cb) {
     cb = pdfToTextCommand
   }
@@ -23,6 +23,11 @@ module.exports = function pdfTextExtract (filePath, options, pdfToTextCommand, c
   }
 
   filePath = path.resolve(filePath)
+
+  // [feat-promise] options have to be not null
+  if (!options) {
+    options = {}
+  }
 
   // default options
   options.encoding = options.encoding || 'UTF-8'
@@ -66,9 +71,10 @@ module.exports = function pdfTextExtract (filePath, options, pdfToTextCommand, c
   args.push(filePath)
   args.push('-')
 
-  streamResults(pdfToTextCommand, args, options, options.splitPages ? splitPages : cb)
-
   function splitPages (err, content) {
+    if (typeof (this.cb) === 'function' && this.cb) {
+      cb = this.cb
+    }
     if (err) {
       return cb(err)
     }
@@ -87,6 +93,18 @@ module.exports = function pdfTextExtract (filePath, options, pdfToTextCommand, c
       pages.pop()
     }
     cb(null, pages)
+  }
+  // [feat-promise]
+  // if cb is not defined, then it's probably a promise-typed call
+  // in order to use promise, instantiation is required
+  if (!cb) {
+    this.pdfToTextCommand = pdfToTextCommand
+    this.args = args
+    this.options = options
+    this.splitPages = splitPages
+    this.filePath = filePath
+  } else {
+    streamResults(pdfToTextCommand, args, options, options.splitPages ? splitPages : cb)
   }
 }
 
@@ -118,3 +136,49 @@ function streamResults (command, args, options, cb) {
     cb(null, output)
   }
 }
+
+/**
+ * [feat-promise]
+ * Promise support
+ *
+ * @param {Function} resolve
+ * @param {Function} [reject]
+ * @return {Request}
+ */
+pdfTextExtract.prototype.then = function (resolve, reject) {
+  if (!this._fullfilledPromise) {
+    var self = this
+    this._fullfilledPromise = new Promise(function (innerResolve, innerReject) {
+      streamResults(self.pdfToTextCommand, self.args, self.options, self.options.splitPages ? splitPagesGlobal : resolve)
+      innerResolve('ok')
+    })
+  }
+
+  /**
+  * Duplicated from function splitPages of pdfTextExtract
+  */
+  function splitPagesGlobal (err, content) {
+    if (err) {
+      return resolve(err)
+    }
+    var pages = content.split(/\f/)
+    if (!pages) {
+      return resolve({
+        message: 'pdf-text-extract failed',
+        error: 'no text returned from the pdftotext command',
+        filePath: this.filePath,
+        stack: new Error().stack
+      })
+    }
+    // sometimes there can be an extract blank page on the end
+    var lastPage = pages[pages.length - 1]
+    if (!lastPage) {
+      pages.pop()
+    }
+    resolve(null, pages)
+  }
+
+  return this._fullfilledPromise.then(resolve, reject)
+}
+
+module.exports = pdfTextExtract
