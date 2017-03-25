@@ -99,6 +99,22 @@ extract(filePath, options, pdfToTextCommand, function (err, pages) {
 })
 ```
 
+
+ES6 promises are supported. You can now call .then(onFulfilled[, onRejected]):
+
+```javascript
+var filePath = path.join(__dirname, 'test/data/multipage.pdf')
+var Extract = require('../index.js')
+var extract = new Extract(filePath)
+
+extract.then(function (pages) {
+  console.dir('extracted pages', pages)
+}).catch(function (err) {
+  console.error('error:', err)
+})
+```
+
+
 ## As a command line tool
 
 ```bash

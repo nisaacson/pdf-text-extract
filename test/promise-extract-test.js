@@ -8,10 +8,11 @@ describe('Pdf extract', function () {
   it('should return output and no error when everything is ok', function (done) {
     var filePath = path.join(__dirname, 'data', 'multipage.pdf')
     var extractor = new Extract(filePath)
-    extractor.then(function (err, pages) {
-      should.not.exist(err)
+    extractor.then(function (pages) {
       should.exists(pages)
       done()
+    }).catch(function (err) {
+      console.error('error:', err)
     })
   })
 
@@ -20,11 +21,11 @@ describe('Pdf extract', function () {
     assert.ok(fs.existsSync(filePath), 'pdf file not found at path: ' + filePath)
 
     var extractor = new Extract(filePath)
-    extractor.then(function (err, pages) {
-      should.not.exist(err)
+    extractor.then(function (pages) {
       should.exist(pages)
-
       done()
+    }).catch(function (err) {
+      console.error('error:', err)
     })
   })
 
@@ -35,13 +36,14 @@ describe('Pdf extract', function () {
     var complete = 0
     for (var i = 0; i < streams; i++) {
       var extractor = new Extract(filePath)
-      extractor.then(function (err, pages) {
-        should.not.exist(err)
+      extractor.then(function (pages) {
         should.exists(pages[0])
         complete++
         if (complete === streams) {
           done()
         }
+      }).catch(function (err) {
+        console.error('error:', err)
       })
     }
   })
@@ -55,10 +57,11 @@ describe('Pdf extract', function () {
       cwd: null
     }
     var extractor = new Extract(filePath, options)
-    extractor.then(function (err, pages) {
-      should.not.exists(err)
+    extractor.then(function (pages) {
       should.exists(pages)
       done()
+    }).catch(function (err) {
+      console.error('error:', err)
     })
   })
 
@@ -68,10 +71,11 @@ describe('Pdf extract', function () {
     var pdfToTextCommand = 'pdftotext'
 
     var extractor = new Extract(filePath, options, pdfToTextCommand)
-    extractor.then(function (err, pages) {
-      should.not.exist(err)
+    extractor.then(function (pages) {
       should.exists(pages)
       done()
+    }).catch(function (err) {
+      console.error('error:', err)
     })
   })
 })
