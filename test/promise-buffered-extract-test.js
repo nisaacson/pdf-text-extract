@@ -10,8 +10,7 @@ describe('Buffered Extract Promise', function () {
     var filePath = path.join(__dirname, 'data', 'multipage.pdf')
     assert.ok(fs.existsSync(filePath), 'pdf file not found at path: ' + filePath)
     var extractor = new Extract(filePath)
-    extractor.then(function (err, pages) {
-      should.not.exist(err)
+    extractor.then(function (pages) {
       should.exist(pages, 'no pages extracted')
       pages.length.should.eql(desiredNumPages)
       pages.map(function (page) {
@@ -19,6 +18,8 @@ describe('Buffered Extract Promise', function () {
         page.length.should.be.above(0)
       })
       done()
+    }).catch(function (err) {
+      console.error('error:', err)
     })
   })
 })
