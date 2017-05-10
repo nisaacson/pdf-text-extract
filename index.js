@@ -16,7 +16,6 @@ function pdfTextExtract (filePath, options, pdfToTextCommand, cb) {
   if (typeof (pdfToTextCommand) === 'function') {
     cb = pdfToTextCommand
     pdfToTextCommand = 'pdftotext'
-    options = {}
   }
   if (!pdfToTextCommand) {
     pdfToTextCommand = 'pdftotext'
