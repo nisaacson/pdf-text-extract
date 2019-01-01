@@ -151,33 +151,60 @@ pdfTextExtract.prototype.then = function (resolve, reject) {
   if (!this._fullfilledPromise) {
     var self = this
     this._fullfilledPromise = new Promise(function (innerResolve, innerReject) {
-      streamResults(self.pdfToTextCommand, self.args, self.options, self.options.splitPages ? splitPagesGlobal : resolve)
-      innerResolve('ok')
+      streamResultsPromise(self.pdfToTextCommand, self.args, self.options, self.options.splitPages ? splitPagesPromise : resolve)
     })
   }
 
   /**
   * Duplicated from function splitPages of pdfTextExtract
   */
-  function splitPagesGlobal (err, content) {
-    if (err) {
-      return resolve(err)
-    }
+  function splitPagesPromise (content) {
     var pages = content.split(/\f/)
     if (!pages) {
-      return resolve({
+      var ex = {
         message: 'pdf-text-extract failed',
         error: 'no text returned from the pdftotext command',
         filePath: this.filePath,
         stack: new Error().stack
-      })
+      }
+      throw ex
     }
     // sometimes there can be an extract blank page on the end
     var lastPage = pages[pages.length - 1]
     if (!lastPage) {
       pages.pop()
     }
-    resolve(null, pages)
+    resolve(pages)
+  }
+
+  /**
+  * Duplicated from function splitPages of streamResults
+  */
+  function streamResultsPromise (command, args, options, cb) {
+    var output = ''
+    var stderr = ''
+    var child = spawn(command, args, options)
+    child.stdout.setEncoding('utf8')
+    child.stderr.setEncoding('utf8')
+    child.stdout.on('data', stdoutHandler)
+    child.stderr.on('data', stderrHandler)
+    child.on('close', closeHandler)
+
+    function stdoutHandler (data) {
+      output += data
+    }
+
+    function stderrHandler (data) {
+      stderr += data
+    }
+
+    function closeHandler (code) {
+      if (code !== 0) {
+        var ex = new Error('pdf-text-extract command failed: ' + stderr)
+        throw ex
+      }
+      cb(output)
+    }
   }
 
   return this._fullfilledPromise.then(resolve, reject)
