@@ -60,10 +60,10 @@ You can set the following options:
 - `eol`: End of line convention. One of either: `unix`, `dos` or `mac`
 - `ownerPassword`: Owner password (for encrypted files)
 - `userPassword`: User password (for encrypted files)
-- `splitPages`: If true, the result will be and array of pages. Default: true.
+- `splitPages`: If true, the result will be an array of pages. Default: true.
 
 
-If needed you can pass an optional arguments to the extract function. These will be passed to the `child_process.spawn` call.
+If needed you can pass optional arguments to the extract function. These will be passed to the `child_process.spawn` call.
 
 ```javascript
 var filePath = path.join(__dirname, 'test/data/multipage.pdf')
